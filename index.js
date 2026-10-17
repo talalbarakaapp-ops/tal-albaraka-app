@@ -4,7 +4,7 @@ R=functions.region('asia-southeast1').database.instance('tal-albraka-default-rtd
 KIND={adv:['سلفة','adv'],lv:['إجازة','lv'],fx:['تصحيح حضور','aed']};
 async function tokensOf(uids){const out=[];await Promise.all(uids.map(async u=>{const s=await db.ref('tokens/'+u).get();Object.keys(s.val()||{}).forEach(t=>out.push({u,t}))}));return out}
 async function send(list,title,body){if(!list.length)return;
- const r=await admin.messaging().sendEachForMulticast({tokens:list.map(x=>x.t),notification:{title,body},webpush:{fcmOptions:{link:APP_URL}}});
+ const r=await admin.messaging().sendEachForMulticast({tokens:list.map(x=>x.t),notification:{title,body},android:{priority:'high'},webpush:{headers:{Urgency:'high',TTL:'86400'},notification:{icon:APP_URL+'icon-192.png',badge:APP_URL+'icon-192.png',dir:'rtl',lang:'ar'},fcmOptions:{link:APP_URL}}});
  await Promise.all(r.responses.map((x,i)=>!x.success&&/not-registered|invalid-registration/.test(x.error?.code||'')?db.ref(`tokens/${list[i].u}/${list[i].t}`).remove():null))}
 async function managers(branch,perm){const[a,s]=await Promise.all([db.ref('admins').get(),db.ref('sups').get()]),A=a.val()||{},ids=Object.keys(A).filter(k=>A[k]===true);
  Object.entries(s.val()||{}).forEach(([k,x])=>{if(x.active!==false&&x.br?.[branch]&&x.p?.[perm])ids.push(k)});return ids}
