@@ -1,5 +1,5 @@
 const functions=require('firebase-functions/v1'),admin=require('firebase-admin');admin.initializeApp();
-const db=admin.database(),APP_URL='https://tal-albraka.web.app/',
+const db=admin.database(),APP_URL='https://talalbarakaapp-ops.github.io/tal-albaraka-app/',
 R=functions.region('asia-southeast1').database.instance('tal-albraka-default-rtdb'),
 KIND={adv:['سلفة','adv'],lv:['إجازة','lv'],fx:['تصحيح حضور','aed']};
 async function tokensOf(uids){const out=[];await Promise.all(uids.map(async u=>{const s=await db.ref('tokens/'+u).get();Object.keys(s.val()||{}).forEach(t=>out.push({u,t}))}));return out}
