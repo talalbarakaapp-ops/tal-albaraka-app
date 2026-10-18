@@ -14,3 +14,4 @@ for(const k of Object.keys(KIND)){
   await send(await tokensOf(await managers(e.branch,KIND[k][1])),'طلب جديد',`${KIND[k][0]} من ${e.n||'موظف'}`)});
  exports[k+'Done']=R.ref(`/${k}/{uid}/{id}/s`).onUpdate(async(ch,ctx)=>{const a=ch.after.val();if(ch.before.val()!=='pn'||(a!=='ap'&&a!=='rj'))return;
   await send(await tokensOf([ctx.params.uid]),a==='ap'?'تمت الموافقة':'تم الرفض',`طلب ${KIND[k][0]} الخاص بك`)})}
+Object.assign(exports, require('./messages'));
